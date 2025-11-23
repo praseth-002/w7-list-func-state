@@ -50,66 +50,77 @@
 // }
 
 
+// import 'package:flutter/material.dart';
+
+// import 'ui/screens/welcome_screen.dart';
+// import 'ui/screens/temperature_screen.dart';
+
+// class TemperatureApp extends StatefulWidget {
+//   const TemperatureApp({super.key});
+
+//   @override
+//   State<TemperatureApp> createState() {
+//     return _TemperatureAppState();
+//   }
+// }
+
+// class _TemperatureAppState extends State<TemperatureApp> {
+//   late Widget currScreen;
+
+//   void toTempScreen() {
+//     setState(() {
+//       currScreen = TemperatureScreen(buttonPress: toWelcScreen,);
+//     });
+//   }
+
+//   void toWelcScreen() {
+//     setState(() {
+//       currScreen = WelcomeScreen(buttonPress: toTempScreen,);
+//     });
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     currScreen = WelcomeScreen(buttonPress: toTempScreen);
+//   }
+  
+//   @override
+//   Widget build(context) {
+
+//     return MaterialApp(
+//       home: Scaffold(
+//         body: Container(
+//           decoration: const BoxDecoration(
+//             gradient: LinearGradient(
+//               colors: [
+//                 Color(0xff16C062),
+//                 Color(0xff00BCDC),
+//                 // Color.fromARGB(255, 192, 22, 22),
+//                 // Color.fromARGB(255, 220, 0, 191),
+//               ],
+//               begin: Alignment.topLeft,
+//               end: Alignment.bottomRight,
+//             ),
+//           ),
+//           child: currScreen,
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// void main() {
+//   runApp(const TemperatureApp());
+// }
+
 import 'package:flutter/material.dart';
 
-import 'ui/screens/welcome_screen.dart';
-import 'ui/screens/temperature_screen.dart';
-
-class TemperatureApp extends StatefulWidget {
-  const TemperatureApp({super.key});
-
-  @override
-  State<TemperatureApp> createState() {
-    return _TemperatureAppState();
-  }
-}
-
-class _TemperatureAppState extends State<TemperatureApp> {
-  late Widget currScreen;
-
-  void toTempScreen() {
-    setState(() {
-      currScreen = TemperatureScreen(buttonPress: toWelcScreen,);
-    });
-  }
-
-  void toWelcScreen() {
-    setState(() {
-      currScreen = WelcomeScreen(buttonPress: toTempScreen,);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    currScreen = WelcomeScreen(buttonPress: toTempScreen);
-  }
-  
-  @override
-  Widget build(context) {
-
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xff16C062),
-                Color(0xff00BCDC),
-                // Color.fromARGB(255, 192, 22, 22),
-                // Color.fromARGB(255, 220, 0, 191),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: currScreen,
-        ),
-      ),
-    );
-  }
-}
-
+import 'ui/screens/profile.dart';
+ 
 void main() {
-  runApp(const TemperatureApp());
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: ProfileApp(),
+  ));
 }
