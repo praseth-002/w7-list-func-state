@@ -49,9 +49,8 @@
 //   }
 // }
 
-
+//---------------------------------------
 // import 'package:flutter/material.dart';
-
 // import 'ui/screens/welcome_screen.dart';
 // import 'ui/screens/temperature_screen.dart';
 
@@ -114,13 +113,135 @@
 //   runApp(const TemperatureApp());
 // }
 
-import 'package:flutter/material.dart';
-
-import 'ui/screens/profile.dart';
+//---------------------------------------
+// import 'package:flutter/material.dart';
+// import 'ui/screens/profile.dart';
  
+// void main() {
+//   runApp(const MaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     home: ProfileApp(),
+//   ));
+// }
+
+
+//---------------------------------------
+import 'package:flutter/material.dart';
+import './data/joke_data.dart';
+
 void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ProfileApp(),
+  runApp(MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text("Favorite Joke"),
+      ),
+      body: CardContainer(),
+    )
   ));
+}
+
+Color appColor = Colors.green[300]!;
+
+class CardContainer extends StatefulWidget {
+  const CardContainer({super.key});
+
+  @override
+  State<CardContainer> createState() => _CardContainerState();
+}
+
+class _CardContainerState extends State<CardContainer> {
+  // Holds the index of the currently favorited joke
+  final ValueNotifier<int?> favoriteIndex = ValueNotifier<int?>(null);
+
+  @override
+  void dispose() {
+    favoriteIndex.dispose(); // Clean up
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (int i = 0; i < jokeList.length; i++)
+          FavoriteCard(
+            title: jokeList[i].title,
+            desc: jokeList[i].desc,
+            index: i,
+            favoriteIndex: favoriteIndex,
+          ),
+      ],
+    );
+  }
+}
+class FavoriteCard extends StatelessWidget {
+  final String title;
+  final String desc;
+  final int index;
+  final ValueNotifier<int?> favoriteIndex;
+
+  const FavoriteCard({
+    super.key,
+    required this.title,
+    required this.desc,
+    required this.index,
+    required this.favoriteIndex,
+  });
+
+  void toggleFavorite() {
+    if (favoriteIndex.value == index) {
+      favoriteIndex.value = null; // unselect if already favorite
+    } else {
+      favoriteIndex.value = index; // select this card
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int?>(
+      valueListenable: favoriteIndex,
+      builder: (context, currentFavorite, _) {
+        final isFavorite = currentFavorite == index;
+
+        return Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(width: .5, color: Colors.grey),
+            ),
+          ),
+          padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                flex: 7,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: appColor,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Text(desc),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: toggleFavorite,
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
