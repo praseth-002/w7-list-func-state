@@ -4,14 +4,7 @@ class TemperatureScreen extends StatelessWidget {
   final VoidCallback buttonPress;
   TemperatureScreen({super.key, required this.buttonPress});
 
-  final InputDecoration inputDecoration = InputDecoration(
-    enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.white, width: 1.0),
-      borderRadius: BorderRadius.circular(12),
-    ),
-    hintText: 'Enter a temperature',
-    hintStyle: const TextStyle(color: Colors.white),
-  );
+  
 
   @override
   Widget build(BuildContext context) {
@@ -46,26 +39,80 @@ class TemperatureScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 50),
-            const Text("Temperature in Degrees:"),
-            const SizedBox(height: 10),
-            TextField(
-              decoration: inputDecoration,
-              style: const TextStyle(color: Colors.white),
-            ),
-            const SizedBox(height: 30),
-            const Text("Temperature in Fahrenheit:"),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Text('test'),
-            ),
+            TempConverterWidget()
           ],
         ),
       ),
+    );
+  }
+}
+
+class TempConverterWidget extends StatefulWidget {
+  const TempConverterWidget ({super.key});
+
+  @override  
+  State<TempConverterWidget> createState() => _TempConverterWidgetState();
+}
+
+class _TempConverterWidgetState extends State<TempConverterWidget> {
+  final InputDecoration inputDecoration = InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    hintText: 'Enter a temperature',
+    hintStyle: const TextStyle(color: Colors.white),
+  );
+
+  final textFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    textFieldController.dispose();
+    super.dispose();
+  }
+
+  String fahrenheit = "";
+
+  void convertTemp() {
+    final input = double.tryParse(textFieldController.text);
+    if (input != null) {
+      setState(() {
+        fahrenheit = ((input * 9 / 5) + 32).toStringAsFixed(2);
+      });
+    } else {
+      setState(() {
+        fahrenheit = "0";
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text("Temperature in Celcius:"),
+          SizedBox(height: 10),
+        TextField(
+          controller: textFieldController,
+          decoration: inputDecoration,
+          style:  TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 30),
+        Text("Temperature in Fahrenheit:"),
+        SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding:  EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child:  Text(fahrenheit),
+        ),
+        SizedBox(height: 10,),
+        TextButton(onPressed: convertTemp, child: Text("Convert"))
+      ],
     );
   }
 }
